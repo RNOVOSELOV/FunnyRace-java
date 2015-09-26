@@ -18,22 +18,14 @@ public class Wizard extends Creature {
     Wizard(String name) {
         super(name + (" (маг)"));
         Random random = new Random();
-        minSpeed = 10 + random.nextInt(16);     // 10 <= minimalSpeed <= 25
-        maxSpeed = 25 + random.nextInt(16);     // 25 <= maximalSpeed <= 40
+        speed.setMinSpeed(10 + random.nextInt(16));     // 10 <= minimalSpeed <= 25
+        speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40
     }
 
     // C вероятностью 25% колдун может колдовать и прибалять себе скорость на круге в два раза
     void ride() {
         Random random = new Random();
         boolean isWiz = (random.nextInt(4) == 1) ? true : false;
-        currentSpeed = minSpeed + random.nextInt(maxSpeed - minSpeed);
-        if (isWiz) {
-            currentSpeed = makeIncreaseSpeedSpell(currentSpeed);
-        }
-        currentDistance = currentDistance + currentSpeed;
-    }
-
-    int makeIncreaseSpeedSpell(int speed) {
-        return speed * 2;
+        currentDistance = currentDistance + speed.moveAndGetSpeed(isWiz);
     }
 }

@@ -18,7 +18,7 @@ public class Goblin extends Creature {
     Goblin(String name) {
         super(name + (" (гоблин)"));
         Random random = new Random();
-        minSpeed = 10 + random.nextInt(16);     // 10 <= minimalSpeed <= 25
-        maxSpeed = 40 + random.nextInt(16);     // 40 <= maximalSpeed <= 55
+        speed.setMinSpeed(10 + random.nextInt(16));     // 10 <= minimalSpeed <= 25
+        speed.setMaxSpeed(40 + random.nextInt(16));     // 40 <= maximalSpeed <= 55
     }
 }

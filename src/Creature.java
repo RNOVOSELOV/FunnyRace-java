@@ -5,11 +5,10 @@ import java.util.Random;
  */
 public class Creature {
     String name;
-    int minSpeed;
-    int maxSpeed;
+    Speed speed;
     int age;
-    int currentSpeed;
     int currentDistance;
+    boolean skipMove;
 
     Creature() {
         this("Вообще что то странное");
@@ -18,25 +17,24 @@ public class Creature {
     Creature(String name) {
         Random random = new Random();
         this.name = name;
-        minSpeed = 0;
-        maxSpeed = 0;
+        speed = new Speed();
         age = 3 + random.nextInt(8);    // От трех до 10 лет допускаем
         currentDistance = 0;
+        skipMove = false;
     }
 
     void about() {
-        System.out.printf("%s: Возраст %2d,\t Минимальная скорость: %d;\tМаксимальная скорость: %d\n", name, age, minSpeed, maxSpeed);
+        System.out.printf("%s: Возраст %2d,\t Минимальная скорость: %d;\tМаксимальная скорость: %d\n", name, age, speed.getMinSpeed(), speed.getMaxSpeed());
     }
 
     void ride() {
-        Random random = new Random();
-        currentSpeed = minSpeed + random.nextInt(maxSpeed - minSpeed);
-        currentDistance = currentDistance + currentSpeed;
+
+        currentDistance = currentDistance + speed.moveAndGetSpeed();
     }
 
     void getInformation() {
         if (currentDistance < Stadium.DISTANCE) {
-            System.out.printf("%s: \tТекущая скорость - %d; Пройдено дистанции - %d\n", name, currentSpeed, currentDistance);
+            System.out.printf("%s: \tТекущая скорость - %d; Пройдено дистанции - %d\n", name, speed.getCurrentSpeed(), currentDistance);
         } else {
             System.out.printf("%s: \tФИНИШ\n", name);
         }

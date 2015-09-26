@@ -18,7 +18,7 @@ public class Skeleton extends Creature {
     Skeleton(String name) {
         super(name + (" (скелет)"));
         Random random = new Random();
-        minSpeed = 5 + random.nextInt(6);       // 5 <= minimalSpeed <= 10
-        maxSpeed = 70 + random.nextInt(6);      // 70 <= maximalSpeed <= 75
+        speed.setMinSpeed(5 + random.nextInt(6));       // 5 <= minimalSpeed <= 10
+        speed.setMaxSpeed(70 + random.nextInt(6));      // 70 <= maximalSpeed <= 75
     }
 }
