@@ -33,7 +33,9 @@ public class Skeleton extends Creature {
     // однако его кости не из титана, а обычная органика , потому он так же и очень хрупкий,
     // может распасться на множество кусочков во время бега и сойти с дистанции
     void ride() {
+        checkIsCrash();
         if (isCrashed) {
+            isDistanceOver = true;
             return;
         }
         if (skipNextMove) {
@@ -41,11 +43,16 @@ public class Skeleton extends Creature {
             return;
         }
         currentDistance = currentDistance + speed.moveAndGetSpeed();
-        checkIsCrash();
+        if (currentDistance >= Stadium.DISTANCE) {
+            isDistanceOver = true;
+        }
+        getInformation();
     }
 
     void checkIsCrash () {
         Random random = new Random();
-        isCrashed = (random.nextInt(5) == 1) ? true : false;
+        isCrashed = (random.nextInt(10) == 9) ? true : false;
+        if (isCrashed)
+            System.out.println("скелет разрушился");
     }
 }

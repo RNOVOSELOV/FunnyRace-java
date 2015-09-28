@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -129,24 +131,35 @@ public class Stadium {
     }
 
     void startRace() {
+        boolean stopRace;
+        ArrayList<Creature> tempList;
+        do {
+            stopRace = true;
+            printCurrentPosition();
+            tempList = new ArrayList<Creature>(creatures);
+            Collections.sort(tempList);
+            for (Creature creature : tempList) {
+                creature.ride();
+                if (creature.isDistanceOver && stopRace) {
+                    stopRace = true;
+                } else {
+                    stopRace = false;
+                }
+            }
+        } while (!stopRace);
+
         printCurrentPosition();
-
-        for (Creature creature : creatures) {
-            creature.ride();
-        }
-
-        printCurrentPosition();
-
-        pause();
     }
 
     void printCurrentPosition() {
         for (int i = 0; i < creatures.size(); i++) {
-            int currentPositionAtTreadmill = Stadium.PRINTEDDISTANCE * creatures.get(i).speed.getCurrentSpeed() / DISTANCE;
+            int currentPositionAtTreadmill = Stadium.PRINTEDDISTANCE * creatures.get(i).currentDistance / DISTANCE;
             System.out.print(i+1 + ") ");
             for (int j = 0; j < Stadium.PRINTEDDISTANCE; j++) {
                 if (j == currentPositionAtTreadmill) {
                     System.out.print("|");
+                } else if (creatures.get(i).currentDistance >= DISTANCE && j == Stadium.PRINTEDDISTANCE-1) {
+                    System.out.print("X");
                 } else {
                     System.out.print("_");
                 }
@@ -164,27 +177,6 @@ public class Stadium {
     }
 
     /*
-
-
-        String msg;
-        for (int i = 0; true; i++) {
-            msg = (i == 0) ? "\nЗабег начался. Дистанция "+ DISTANCE +" м." : "\nВременная отсечка " + i + ": ";
-            System.out.println(msg);
-            // Заставляем лошадок пробежаться
-            for (Horse horse : horses) {
-                horse.ride();
-            }
-            // Сортируем по дистанции
-            sorthorses(horses);
-            // Выдаем список
-            for (Horse horse : horses) {
-                horse.getInformation();
-            }
-            pause();
-            if (horses[14].currentDistance > DISTANCE)
-                break;
-        }
-        System.out.println("Забег закончен.");
         if (horses[0].horseNumber == number) {
             System.out.println("Ваша лошадь пришла первой! Принимайте поздравления и вознаграждения!");
         } else {

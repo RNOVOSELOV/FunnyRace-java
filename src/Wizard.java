@@ -44,14 +44,19 @@ public class Wizard extends Creature {
         boolean isFreezeSpeelDone = doSpell();
         if (isSpeedSellDone) {
             currSpeed = currSpeed * 2;
+            System.out.println("Скорость увеличена");
         }
         if (isFreezeSpeelDone) {
             makeFreeze();
         }
         currentDistance = currentDistance + currSpeed;
+        if (currentDistance >= Stadium.DISTANCE) {
+            isDistanceOver = true;
+        }
+        getInformation();
     }
 
     private void makeFreeze() {
-
+        System.out.println("Заморозка");
     }
 }
