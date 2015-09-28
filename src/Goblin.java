@@ -11,7 +11,7 @@ public class Goblin extends Creature {
     }
 
     Goblin() {
-        this("Неизвестный - " + count);
+        this("Unknown - " + count);
         count++;
     }
 
@@ -20,7 +20,7 @@ public class Goblin extends Creature {
         super(name + (" (гоблин)"));
         if (name.isEmpty())
         {
-            this.name = "Неизвестный - " + count + " (гоблин)";
+            this.name = "Unknown #" + count + " (гоблин)";
             count ++;
         }
         Random random = new Random();

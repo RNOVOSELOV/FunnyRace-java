@@ -12,7 +12,7 @@ public class Skeleton extends Creature {
     }
 
     Skeleton() {
-        this("Неизвестный - " + count);
+        this("Unknown - " + count);
         count++;
     }
 
@@ -20,7 +20,7 @@ public class Skeleton extends Creature {
         super(name + (" (скелет)"));
         if (name.isEmpty())
         {
-            this.name = "Неизвестный - " + count + " (скелет)";
+            this.name = "Unknown #" + count + " (скелет)";
             count ++;
         }
         Random random = new Random();

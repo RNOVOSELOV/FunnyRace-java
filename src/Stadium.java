@@ -6,7 +6,7 @@ import java.util.Scanner;
  */
 public class Stadium {
     public static int DISTANCE = 400;           // Дистанция, которую необходимо пробежать
-    public static int numberOfCreaturesTypes = 4;
+    public static int numberOfCreaturesTypes = 3;
     private static Stadium instance = null;
 
     ArrayList<Creature> creatures;
@@ -15,7 +15,7 @@ public class Stadium {
         creatures = new ArrayList<Creature>();
     }
 
-    public static Stadium getInstance () {
+    public static Stadium getInstance() {
         if (instance == null)
             instance = new Stadium();
         return instance;
@@ -31,8 +31,7 @@ public class Stadium {
             System.out.println("В настоящий момент поддерживается " + Stadium.numberOfCreaturesTypes + " типа существ:");
             System.out.println("1 - создать гоблина (обладает средней среди юнитов скоростью)");
             System.out.println("2 - создать скелета (обладает максимально возможной скоростью, однако с 20% вероятностью может разрушиться во время забега)");
-            System.out.println("3 - создать мага (низкая скорость компенсируется 25% вероятностью увеличения текущей скорости в два раза)");
-            System.out.println("4 - создать чернокнижника (с 25% вероятностью замораживает впередиидущих бегунов на один ход, однако собственная скорость является довольно низкой)");
+            System.out.println("3 - создать мага (низкая скорость компенсируется колдовством: увеличения текущей скорости в два раза и замедления оппонентов)");
             do {
                 int creatureID = getCreatureID();
                 if (creatureID == 0) {
@@ -54,7 +53,6 @@ public class Stadium {
     // 1 - создать гоблина
     // 2 - создать скелета
     // 3 - создать мага
-    // 4 - создать чернокнижника
     int getCreatureID() {
         int id;
         Scanner scanner = new Scanner(System.in);
@@ -88,29 +86,21 @@ public class Stadium {
             case 3:
                 creatures.add(new Wizard(name));
                 break;
-            case 4:
-                creatures.add(new Warlock(name));
-                break;
             default:
                 break;
         }
     }
 
     void addCreatureByDefault() {
-        creatures.add(new Wizard("Боря"));
-        creatures.add(new Wizard("Вася"));
-        creatures.add(new Wizard());
-        creatures.add(new Goblin());
-        creatures.add(new Goblin());
-        creatures.add(new Goblin());
-        creatures.add(new Skeleton());
-        creatures.add(new Skeleton());
-        creatures.add(new Skeleton());
-        creatures.add(new Warlock());
-        creatures.add(new Warlock());
-        creatures.add(new Warlock());
-        creatures.add(new Creature() {
-        });
+        creatures.add(new Wizard("Гендальф белый"));
+        creatures.add(new Wizard("Старик Хоттабыч"));
+        creatures.add(new Wizard("Волан де Морт"));
+        creatures.add(new Goblin(""));
+        creatures.add(new Goblin(""));
+        creatures.add(new Goblin(""));
+        creatures.add(new Skeleton(""));
+        creatures.add(new Skeleton(""));
+        creatures.add(new Skeleton(""));
     }
 
     void showRunnersList() {
@@ -120,34 +110,40 @@ public class Stadium {
         }
     }
 
-    void startRace () {
-        for (int i = 0; i < 400; i++) {
+    public void setBet() {
+        Scanner scanner = new Scanner(System.in);
+        int number;
+        do {
+            System.out.print("Введите порядковый номер бегуна: [1-" + creatures.size() + "]: ");
+            if (scanner.hasNextInt()) {
+                number = scanner.nextInt();
+                if (number >= 1 && number <= creatures.size())
+                    break;
+                else
+                    System.out.println("Вы ввели некорректный номер, повторите ввод пожалуйста.");
+            }
+            scanner.nextLine();
+        } while (true);
+        System.out.println("Вы считаете, что победит: " + creatures.get(number-1).name + " ... посмотрим");
+    }
+
+    void startRace() {
+        for (int i = 0; i < 200; i++) {
             System.out.printf("-");
         }
     }
 
-    /*    Horse [] horses = new Horse[15];
-        for (int i = 0; i < horses.length; i++) {
-            Horse tempHorse = new Horse("Кобылка - " + (i + 1), i+1);
-            horses[i] = tempHorse;
+    private static void pause () {
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        for (Horse horse : horses) {
-            horse.about();
-        }
-        Scanner scanner = new Scanner(System.in);
-        int number = 5;
-        do {
-            System.out.print("Введите порядковый номер лошади: [1-20]: ");
-            if (scanner.hasNextInt()) {
-                number = scanner.nextInt();
-                if (number >=1 && number <= 20)
-                    break;
-                else
-                    System.out.println("Вы ввели некорректный номер лошади, повторите ввод пожалуйста.");
-            }
-            scanner.nextLine();
-        } while (true);
-        System.out.println("Ваша лошадь: " + horses[number-1].name);
+    }
+
+    /*
+
+
         String msg;
         for (int i = 0; true; i++) {
             msg = (i == 0) ? "\nЗабег начался. Дистанция "+ DISTANCE +" м." : "\nВременная отсечка " + i + ": ";
@@ -180,25 +176,5 @@ public class Stadium {
             System.out.println("Победила лошадь: " + horses[0].name + ". Ваша лошадь пришла под номером: " + number);
         }
     }
-
-    // Пузырек :-)
-    static void sorthorses (Horse[] h) {
-        for (int i = h.length-1; i >= 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (h[j].currentDistance < h[j + 1].currentDistance) {
-                    Horse temp = h[j];
-                    h[j] = h[j+1];
-                    h[j+1] = temp;
-                }
-            }
-        }
-    }
-
-    private static void pause () {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 */
 }

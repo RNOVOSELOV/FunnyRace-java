@@ -24,7 +24,7 @@ public class Creature {
     }
 
     void about() {
-        System.out.printf("%s: Возраст %2d,\t Минимальная скорость: %d;\tМаксимальная скорость: %d\n", name, age, speed.getMinSpeed(), speed.getMaxSpeed());
+        System.out.printf("%s: \tВозраст %2d,\t Минимальная скорость: %d;\tМаксимальная скорость: %d\n", name, age, speed.getMinSpeed(), speed.getMaxSpeed());
     }
 
     void ride() {

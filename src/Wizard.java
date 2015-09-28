@@ -11,38 +11,47 @@ public class Wizard extends Creature {
     }
 
     Wizard() {
-        this("Неизвестный - " + count);
+        this("Unknown - " + count);
         count++;
     }
 
     Wizard(String name) {
         super(name + (" (маг)"));
-        if (name.isEmpty())
-        {
-            this.name = "Неизвестный - " + count + " (маг)";
-            count ++;
+        if (name.isEmpty()) {
+            this.name = "Unknown #" + count + " (маг)";
+            count++;
         }
         Random random = new Random();
         speed.setMinSpeed(10 + random.nextInt(16));     // 10 <= minimalSpeed <= 25
         speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40
     }
 
-    // Колдун - добрый волшебник, однако его добро ограничивается тем что ничего плохого он не делает окружающим его товарищам,
-    // однако с вероятностью 25% маг прибалять себе скорость в два раза
+    boolean doSpell() {
+        Random random = new Random();
+        boolean isWiz = (random.nextInt(4) == 1) ? true : false;
+        return isWiz;
+    }
+
+    // с вероятностью 25% маг прибалять себе скорость в два раза
+    // с вероятностью 25% замораживает впередиидущих юнитов на один ход
     void ride() {
         if (skipNextMove) {
             skipNextMove = false;
             return;
         }
         int currSpeed = speed.moveAndGetSpeed();
-        if (doSpell())
+        boolean isSpeedSellDone = doSpell();
+        boolean isFreezeSpeelDone = doSpell();
+        if (isSpeedSellDone) {
             currSpeed = currSpeed * 2;
+        }
+        if (isFreezeSpeelDone) {
+            makeFreeze();
+        }
         currentDistance = currentDistance + currSpeed;
     }
 
-    boolean doSpell() {
-        Random random = new Random();
-        boolean isWiz = (random.nextInt(4) == 1) ? true : false;
-        return isWiz;
+    private void makeFreeze() {
+
     }
 }
