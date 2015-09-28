@@ -17,6 +17,11 @@ public class Wizard extends Creature {
 
     Wizard(String name) {
         super(name + (" (маг)"));
+        if (name.isEmpty())
+        {
+            this.name = "Неизвестный - " + count + " (маг)";
+            count ++;
+        }
         Random random = new Random();
         speed.setMinSpeed(10 + random.nextInt(16));     // 10 <= minimalSpeed <= 25
         speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40

@@ -18,6 +18,11 @@ public class Skeleton extends Creature {
 
     Skeleton(String name) {
         super(name + (" (скелет)"));
+        if (name.isEmpty())
+        {
+            this.name = "Неизвестный - " + count + " (скелет)";
+            count ++;
+        }
         Random random = new Random();
         speed.setMinSpeed(25 + random.nextInt(6));       // 25 <= minimalSpeed <= 30
         speed.setMaxSpeed(70 + random.nextInt(6));      // 70 <= maximalSpeed <= 75

@@ -3,8 +3,8 @@
  */
 public class Race {
     public static void main(String[] args) {
-        Stadium stadium = new Stadium();
-        stadium.tuneCreatures();
+        Stadium stadium = Stadium.getInstance();
+        stadium.createAndSetUpUnits();
         stadium.startRace();
     }
 }

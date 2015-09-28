@@ -18,6 +18,11 @@ public class Goblin extends Creature {
     // Гоблин просто бежит, без колдовства и выкрутасов .... беги форест, беги )
     Goblin(String name) {
         super(name + (" (гоблин)"));
+        if (name.isEmpty())
+        {
+            this.name = "Неизвестный - " + count + " (гоблин)";
+            count ++;
+        }
         Random random = new Random();
         speed.setMinSpeed(10 + random.nextInt(16));     // 10 <= minimalSpeed <= 25
         speed.setMaxSpeed(40 + random.nextInt(16));     // 40 <= maximalSpeed <= 55

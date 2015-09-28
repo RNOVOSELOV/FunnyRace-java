@@ -17,6 +17,11 @@ public class Warlock extends Creature {
 
     Warlock(String name) {
         super(name + (" (чернокнижник)"));
+        if (name.isEmpty())
+        {
+            this.name = "Неизвестный - " + count + " (чернокнижник)";
+            count ++;
+        }
         Random random = new Random();
         speed.setMinSpeed(10 + random.nextInt(16));      // 10 <= minimalSpeed <= 25
         speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40
