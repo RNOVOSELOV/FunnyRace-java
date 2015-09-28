@@ -5,7 +5,8 @@ import java.util.Scanner;
  * Created by novoselov on 25.09.2015.
  */
 public class Stadium {
-    public static int DISTANCE = 400;           // Дистанция, которую необходимо пробежать
+    public static int DISTANCE = 500;           // Дистанция, которую необходимо пробежать
+    public static int PRINTEDDISTANCE = 100;
     public static int numberOfCreaturesTypes = 3;
     private static Stadium instance = null;
 
@@ -45,7 +46,7 @@ public class Stadium {
                 }
             } while (true);
         }
-        showRunnersList();
+        printStartTab();
     }
 
     // Запрос идентификатора создаваемого существа
@@ -103,7 +104,7 @@ public class Stadium {
         creatures.add(new Skeleton(""));
     }
 
-    void showRunnersList() {
+    void printStartTab() {
         for (int i = 0; i < creatures.size(); i++) {
             System.out.printf(i + 1 + ") ");
             creatures.get(i).about();
@@ -124,16 +125,37 @@ public class Stadium {
             }
             scanner.nextLine();
         } while (true);
-        System.out.println("Вы считаете, что победит: " + creatures.get(number-1).name + " ... посмотрим");
+        System.out.println("Вы считаете, что победит: " + creatures.get(number - 1).name + " ... посмотрим\n");
     }
 
     void startRace() {
-        for (int i = 0; i < 200; i++) {
-            System.out.printf("-");
+        printCurrentPosition();
+
+        for (Creature creature : creatures) {
+            creature.ride();
+        }
+
+        printCurrentPosition();
+
+        pause();
+    }
+
+    void printCurrentPosition() {
+        for (int i = 0; i < creatures.size(); i++) {
+            int currentPositionAtTreadmill = Stadium.PRINTEDDISTANCE * creatures.get(i).speed.getCurrentSpeed() / DISTANCE;
+            System.out.print(i+1 + ") ");
+            for (int j = 0; j < Stadium.PRINTEDDISTANCE; j++) {
+                if (j == currentPositionAtTreadmill) {
+                    System.out.print("|");
+                } else {
+                    System.out.print("_");
+                }
+            }
+            System.out.print("\n");
         }
     }
 
-    private static void pause () {
+    private static void pause() {
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
