@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Created by Роман on 26.09.2015.
+ * Created by Р РѕРјР°РЅ on 26.09.2015.
  */
 public class Speed {
     private int minSpeed;
@@ -22,6 +22,8 @@ public class Speed {
     }
 
     public void setMaxSpeed(int maxSpeed) {
+        if (maxSpeed < minSpeed)
+            maxSpeed = minSpeed;
         this.maxSpeed = maxSpeed;
     }
 
@@ -38,14 +40,8 @@ public class Speed {
     }
 
     public int moveAndGetSpeed() {
-        return moveAndGetSpeed(false);
-    }
-
-    public int moveAndGetSpeed(boolean isIncreasedSpeed) {
         Random random = new Random();
         currentSpeed = minSpeed + random.nextInt(maxSpeed - minSpeed);
-        if (isIncreasedSpeed)
-            currentSpeed = currentSpeed * 2;
         return getCurrentSpeed();
     }
 }

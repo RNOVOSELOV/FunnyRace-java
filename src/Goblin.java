@@ -15,6 +15,7 @@ public class Goblin extends Creature {
         count++;
     }
 
+    // Гоблин просто бежит, без колдовства и выкрутасов .... беги форест, беги )
     Goblin(String name) {
         super(name + (" (гоблин)"));
         Random random = new Random();

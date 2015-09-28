@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Created by Роман on 26.09.2015.
+ * Created by Р РѕРјР°РЅ on 26.09.2015.
  */
 public class Warlock extends Creature {
     static private int count;
@@ -11,19 +11,24 @@ public class Warlock extends Creature {
     }
 
     Warlock() {
-        this("Неизвестный - " + count);
+        this("РќРµРёР·РІРµСЃС‚РЅС‹Р№ - " + count);
         count++;
     }
 
     Warlock(String name) {
-        super(name + (" (чернокнижник)"));
+        super(name + (" (С‡РµСЂРЅРѕРєРЅРёР¶РЅРёРє)"));
         Random random = new Random();
         speed.setMinSpeed(10 + random.nextInt(16));      // 10 <= minimalSpeed <= 25
         speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40
     }
 
-    // C вероятностью 25% чернокнижник ставит подножку впереди идущим юнитам, они спропускают ход на следущей итерации
+    // Р§РµСЂРЅРѕРєРЅРёР¶РЅРёРє - РїРѕРґР»СЏРЅС‰РёРє, РґРµР»Р°РµС‚ РІСЃРµ СЃРІРѕРё С‚РµРјРЅС‹Рµ РґРµР»РёС€РєРё Р·Р° СЃРїРёРЅРѕР№ РєРѕР»Р»РµРі
+    // РЎ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 25% СЃС‚Р°РІРёС‚ РїРѕРґРЅРѕР¶РєСѓ РІРїРµСЂРµРґРёРёРґСѓС‰РёРј РёРіСЂРѕРєР°Рј (РѕРЅРё РїСЂРѕРїСѓСЃРєР°СЋС‚ СЃР»РµРґСѓС‰РёР№ С…РѕРґ)
     void ride() {
+        if (skipNextMove) {
+            skipNextMove = false;
+            return;
+        }
         Random random = new Random();
         boolean isWiz = (random.nextInt(4) == 1) ? true : false;
         currentDistance = currentDistance + speed.moveAndGetSpeed();

@@ -22,10 +22,22 @@ public class Wizard extends Creature {
         speed.setMaxSpeed(25 + random.nextInt(16));     // 25 <= maximalSpeed <= 40
     }
 
-    // C вероятностью 25% колдун может колдовать и прибалять себе скорость на круге в два раза
+    // Колдун - добрый волшебник, однако его добро ограничивается тем что ничего плохого он не делает окружающим его товарищам,
+    // однако с вероятностью 25% маг прибалять себе скорость в два раза
     void ride() {
+        if (skipNextMove) {
+            skipNextMove = false;
+            return;
+        }
+        int currSpeed = speed.moveAndGetSpeed();
+        if (doSpell())
+            currSpeed = currSpeed * 2;
+        currentDistance = currentDistance + currSpeed;
+    }
+
+    boolean doSpell() {
         Random random = new Random();
         boolean isWiz = (random.nextInt(4) == 1) ? true : false;
-        currentDistance = currentDistance + speed.moveAndGetSpeed(isWiz);
+        return isWiz;
     }
 }

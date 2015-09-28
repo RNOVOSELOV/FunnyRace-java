@@ -8,19 +8,19 @@ public class Creature {
     Speed speed;
     int age;
     int currentDistance;
-    boolean skipMove;
+    boolean skipNextMove;
 
     Creature() {
-        this("Вообще что то странное");
+        this("Неведомая сущность");
     }
 
     Creature(String name) {
-        Random random = new Random();
         this.name = name;
         speed = new Speed();
+        Random random = new Random();
         age = 3 + random.nextInt(8);    // От трех до 10 лет допускаем
         currentDistance = 0;
-        skipMove = false;
+        skipNextMove = false;
     }
 
     void about() {
@@ -28,7 +28,10 @@ public class Creature {
     }
 
     void ride() {
-
+        if (skipNextMove) {
+            skipNextMove = false;
+            return;
+        }
         currentDistance = currentDistance + speed.moveAndGetSpeed();
     }
 
