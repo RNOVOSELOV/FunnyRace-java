@@ -33,26 +33,30 @@ public class Skeleton extends Creature {
     // однако его кости не из титана, а обычная органика , потому он так же и очень хрупкий,
     // может распасться на множество кусочков во время бега и сойти с дистанции
     void ride() {
-        checkIsCrash();
+        crashSkeleton();
         if (isCrashed) {
             isDistanceOver = true;
-            return;
+        } else if (!skipNextMove) {
+            currentDistance = currentDistance + speed.moveAndGetSpeed();
         }
-        if (skipNextMove) {
-            skipNextMove = false;
-            return;
-        }
-        currentDistance = currentDistance + speed.moveAndGetSpeed();
-        if (currentDistance >= Stadium.DISTANCE) {
-            isDistanceOver = true;
-        }
-        getInformation();
     }
 
-    void checkIsCrash () {
-        Random random = new Random();
-        isCrashed = (random.nextInt(10) == 9) ? true : false;
-        if (isCrashed)
-            System.out.println("скелет разрушился");
+    void crashSkeleton() {
+        if (!isCrashed) {
+            Random random = new Random();
+            isCrashed = (random.nextInt(10) == 9) ? true : false;
+        }
+    }
+
+    void getInformation() {
+        if (isCrashed) {
+            System.out.printf("%s: \tСкелет не выдержал нагрузки, распался на мелкие кусочки\n", name);
+        } else if (isDistanceOver) {
+            System.out.printf("%s: \tФИНИШ\n", name);
+        } else if (skipNextMove) {
+            System.out.printf("%s: \tДвижение заморожено чародеем\n", name);
+        }else {
+            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
+        }
     }
 }

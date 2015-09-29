@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -7,8 +6,8 @@ import java.util.Scanner;
  * Created by novoselov on 25.09.2015.
  */
 public class Stadium {
-    public static int DISTANCE = 500;           // Дистанция, которую необходимо пробежать
-    public static int PRINTEDDISTANCE = 100;
+    public static int DISTANCE = 100;           // Дистанция, которую необходимо пробежать
+    public static int SIZEOFPRINTEDDISTANCE = 100;
     public static int numberOfCreaturesTypes = 3;
     private static Stadium instance = null;
 
@@ -108,7 +107,7 @@ public class Stadium {
 
     void printStartTab() {
         for (int i = 0; i < creatures.size(); i++) {
-            System.out.printf(i + 1 + ") ");
+            System.out.printf("Дорожка " + (i + 1) + "] ");
             creatures.get(i).about();
         }
     }
@@ -131,40 +130,62 @@ public class Stadium {
     }
 
     void startRace() {
-        boolean stopRace;
+        boolean stopRace = false;
         ArrayList<Creature> tempList;
-        do {
+        printCurrentPosition();
+        boolean skipNextMove;
+        int position = 1;
+        int time = 1;
+        while (!stopRace) {
             stopRace = true;
-            printCurrentPosition();
             tempList = new ArrayList<Creature>(creatures);
             Collections.sort(tempList);
+            skipNextMove = false;
             for (Creature creature : tempList) {
+                creature.skipNextMove = skipNextMove;
                 creature.ride();
+                if (creature instanceof Wizard && !skipNextMove) {
+                    skipNextMove = ((Wizard) creature).isFreezeSpellShoot;
+                }
                 if (creature.isDistanceOver && stopRace) {
                     stopRace = true;
                 } else {
                     stopRace = false;
                 }
             }
-        } while (!stopRace);
-
-        printCurrentPosition();
+            Collections.sort(tempList);
+            for (int i = tempList.size()-1; i >= 0 ; i--) {
+                if (creatures.get(i).currentDistance >= Stadium.DISTANCE && !creatures.get(i).isDistanceOver) {
+                    creatures.get(i).isDistanceOver = true;
+                    creatures.get(i).position = position;
+                    position++;
+                }
+            }
+            System.out.println("\nВременная отсечка " + time++ + ":");
+            printCurrentPosition();
+        }
     }
 
     void printCurrentPosition() {
         for (int i = 0; i < creatures.size(); i++) {
-            int currentPositionAtTreadmill = Stadium.PRINTEDDISTANCE * creatures.get(i).currentDistance / DISTANCE;
-            System.out.print(i+1 + ") ");
-            for (int j = 0; j < Stadium.PRINTEDDISTANCE; j++) {
-                if (j == currentPositionAtTreadmill) {
-                    System.out.print("|");
-                } else if (creatures.get(i).currentDistance >= DISTANCE && j == Stadium.PRINTEDDISTANCE-1) {
+            int currentPositionAtTreadmill = Stadium.SIZEOFPRINTEDDISTANCE * creatures.get(i).currentDistance / DISTANCE;
+            if (currentPositionAtTreadmill >= Stadium.SIZEOFPRINTEDDISTANCE) {
+                currentPositionAtTreadmill = Stadium.SIZEOFPRINTEDDISTANCE - 1;
+            }
+
+            System.out.print("Дорожка " + (i + 1) + "] ");
+            for (int j = 0; j < Stadium.SIZEOFPRINTEDDISTANCE; j++) {
+                if (j == currentPositionAtTreadmill && creatures.get(i).isDistanceOver) {
                     System.out.print("X");
+                } else if (j == currentPositionAtTreadmill) {
+                    System.out.print("|");
                 } else {
                     System.out.print("_");
                 }
             }
-            System.out.print("\n");
+            System.out.printf("\t");
+            creatures.get(i).getInformation();
+            creatures.get(i).skipNextMove = false;
         }
     }
 

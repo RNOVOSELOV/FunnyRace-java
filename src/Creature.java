@@ -10,6 +10,7 @@ public class Creature implements Comparable {
     int currentDistance;
     boolean isDistanceOver;
     boolean skipNextMove;
+    int position;
 
     Creature() {
         this("Неведомая сущность");
@@ -23,6 +24,7 @@ public class Creature implements Comparable {
         currentDistance = 0;
         skipNextMove = false;
         isDistanceOver = false;
+        position = 0;
     }
 
     void about() {
@@ -30,19 +32,19 @@ public class Creature implements Comparable {
     }
 
     void ride() {
-        if (skipNextMove) {
-            skipNextMove = false;
-            return;
+        if (!skipNextMove) {
+            currentDistance = currentDistance + speed.moveAndGetSpeed();
         }
-        currentDistance = currentDistance + speed.moveAndGetSpeed();
-        if (currentDistance >= Stadium.DISTANCE) {
-            isDistanceOver = true;
-        }
-        getInformation();
     }
 
     void getInformation() {
-            System.out.printf("%s: \tТекущая скорость - %d; Пройдено дистанции - %d %s\n", name, speed.getCurrentSpeed(), currentDistance, isDistanceOver?"true":"false");
+        if (isDistanceOver) {
+            System.out.printf("%s: \tФИНИШ\n", name);
+        } else if (skipNextMove) {
+            System.out.printf("%s: \tДвижение заморожено чародеем\n", name);
+        } else {
+            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
+        }
     }
 
     // Сравниваем по пройденной дистанции,
@@ -52,6 +54,6 @@ public class Creature implements Comparable {
     public int compareTo(Object o) throws ClassCastException {
         if (!(o instanceof Creature))
             throw new ClassCastException("A Creature object expected.");
-        return ((Creature)o).currentDistance - this.currentDistance;
+        return this.currentDistance - ((Creature) o).currentDistance;
     }
 }
