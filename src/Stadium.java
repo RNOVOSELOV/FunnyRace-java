@@ -11,6 +11,7 @@ public class Stadium {
     public static int numberOfCreaturesTypes = 3;
     private static Stadium instance = null;
     int number;
+    FunnyRaceWindow window = new FunnyRaceWindow();
 
     ArrayList<Creature> creatures;
 
@@ -126,7 +127,7 @@ public class Stadium {
             }
             scanner.nextLine();
         } while (true);
-        System.out.println("Вы считаете, что победит: " + creatures.get(number - 1).name + " ... посмотрим\n");
+        System.out.println("Вы считаете, что победит: " + creatures.get(number - 1).getName() + " ... посмотрим\n");
     }
 
     void startRace() {
@@ -136,10 +137,21 @@ public class Stadium {
         boolean skipNextMove;
         int position = 1;
         int time = 1;
+        window.openWindow();
         while (!stopRace) {
             stopRace = true;
             skipNextMove = false;
             tempList = new ArrayList<Creature>(creatures);
+
+            Collections.sort(tempList);
+            for (Creature creature : tempList) {
+                creature.skipNextMove = skipNextMove;
+                creature.ride();
+                if (creature instanceof Wizard && !skipNextMove) {
+                    skipNextMove = ((Wizard) creature).isFreezeSpellShoot;
+                }
+            }
+
             Collections.sort(tempList);
             for (int i = tempList.size() - 1; i >= 0; i--) {
                 if (creatures.get(i).currentDistance >= Stadium.DISTANCE && !creatures.get(i).isDistanceOver) {
@@ -147,24 +159,20 @@ public class Stadium {
                     creatures.get(i).position = position;
                     position++;
                 }
-            }
-            for (Creature creature : tempList) {
-                creature.skipNextMove = skipNextMove;
-                creature.ride();
-                if (creature instanceof Wizard && !skipNextMove) {
-                    skipNextMove = ((Wizard) creature).isFreezeSpellShoot;
-                }
-                if (creature.isDistanceOver && stopRace) {
+                if (creatures.get(i).isDistanceOver && stopRace) {
                     stopRace = true;
                 } else {
                     stopRace = false;
                 }
             }
-            System.out.println("\nВременная отсечка " + time++ + ":");
+
+            String currState = "Временная отсечка " + time++ + ":\n";
+            System.out.print("\n" + currState);
             for (Creature creature : creatures) {
                 creature.getInformation();
                 creature.skipNextMove = false;
             }
+            window.clearAndSetText(currState);
             printCurrentPosition();
             pause();
         }
@@ -173,7 +181,7 @@ public class Stadium {
                 if (i == number - 1) {
                     System.out.println("Да ты везунчик по жизни, пора в Лас Вегас!");
                 } else {
-                    System.out.println("Победил: " + creatures.get(i).name + ". " + creatures.get(number - 1).name + " занял место: " + creatures.get(number - 1).position);
+                    System.out.println("Победил: " + creatures.get(i).getName() + ". " + creatures.get(number - 1).getName() + " занял место: " + creatures.get(number - 1).position);
                 }
 
             }
@@ -181,24 +189,26 @@ public class Stadium {
     }
 
     void printCurrentPosition() {
+        String text = "";
         for (int i = 0; i < creatures.size(); i++) {
             int currentPositionAtTreadmill = Stadium.SIZEOFPRINTEDDISTANCE * creatures.get(i).currentDistance / DISTANCE;
             if (currentPositionAtTreadmill >= Stadium.SIZEOFPRINTEDDISTANCE) {
                 currentPositionAtTreadmill = Stadium.SIZEOFPRINTEDDISTANCE - 1;
             }
 
-            System.out.print("Дорожка " + (i + 1) + "] ");
+            text += "Дорожка " + (i + 1) + "] ";
             for (int j = 0; j < Stadium.SIZEOFPRINTEDDISTANCE; j++) {
                 if (j == currentPositionAtTreadmill && creatures.get(i).isDistanceOver) {
-                    System.out.print("X");
+                    text += "X";
                 } else if (j == currentPositionAtTreadmill) {
-                    System.out.print("|");
+                    text += "|";
                 } else {
-                    System.out.print("_");
+                    text += "_";
                 }
             }
-            System.out.printf("\n");
+            text += "\n";
         }
+        window.appendText(text);
     }
 
     private static void pause() {

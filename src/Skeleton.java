@@ -32,7 +32,9 @@ public class Skeleton extends Creature {
     // однако его кости не из титана, а обычная органика , потому он так же и очень хрупкий,
     // может распасться на множество кусочков во время бега и сойти с дистанции
     void ride() {
-        crashSkeleton();
+        if (!isDistanceOver) {
+            crashSkeleton();
+        }
         if (isCrashed) {
             isDistanceOver = true;
         } else if (!skipNextMove && !isDistanceOver) {

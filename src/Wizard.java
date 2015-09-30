@@ -21,7 +21,7 @@ public class Wizard extends Creature {
     Wizard(String name) {
         super(name + (" (маг)"));
         if (name.isEmpty()) {
-            this.name = "Unknown #" + count + " (маг)";
+            name = "Unknown #" + count + " (маг)";
             count++;
         }
         Random random = new Random();

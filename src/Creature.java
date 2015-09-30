@@ -4,13 +4,13 @@ import java.util.Random;
  * Created by novoselov on 25.09.2015.
  */
 public class Creature implements Comparable {
-    String name;
-    Speed speed;
-    int age;
-    int currentDistance;
-    boolean isDistanceOver;
-    boolean skipNextMove;
-    int position;
+    protected String name;
+    protected Speed speed;
+    private int age;
+    protected int currentDistance;
+    protected boolean isDistanceOver;
+    protected boolean skipNextMove;
+    protected int position;
 
     Creature() {
         this("Неведомая сущность");
@@ -25,6 +25,10 @@ public class Creature implements Comparable {
         skipNextMove = false;
         isDistanceOver = false;
         position = 0;
+    }
+
+    public String getName (){
+        return name;
     }
 
     void about() {
