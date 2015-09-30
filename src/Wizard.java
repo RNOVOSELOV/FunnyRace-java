@@ -5,9 +5,9 @@ import java.util.Random;
  */
 public class Wizard extends Creature {
     static private int count;
-    boolean isFreezeSpellShoot;
-    boolean isSpeedSpellShoot;
-    boolean doNotUsingMagic;
+    private boolean isFreezeSpellShoot;
+    private boolean isSpeedSpellShoot;
+    private boolean doNotUsingMagic;
 
     static {
         count = 1;
@@ -30,6 +30,10 @@ public class Wizard extends Creature {
         doNotUsingMagic = true;
     }
 
+    public boolean isFreezeSpellShoot() {
+        return isFreezeSpellShoot;
+    }
+
     boolean doSpell() {
         if (doNotUsingMagic) {
             return false;
@@ -42,7 +46,7 @@ public class Wizard extends Creature {
     // с вероятностью 25% маг прибалять себе скорость в два раза
     // с вероятностью 25% замораживает впередиидущих юнитов на один ход
     void ride() {
-        if (!skipNextMove && !isDistanceOver) {
+        if (!skipNextMove() && !isDistanceOver()) {
             int currSpeed = speed.moveAndGetSpeed();
             isSpeedSpellShoot = doSpell();
             isFreezeSpellShoot = doSpell();
@@ -50,23 +54,26 @@ public class Wizard extends Creature {
                 currSpeed = currSpeed * 2;
                 isFreezeSpellShoot = false;
             }
-            currentDistance = currentDistance + currSpeed;
+            setCurrentDistance(getCurrentDistance() + currSpeed);
         }
         if (doNotUsingMagic)
             doNotUsingMagic = !doNotUsingMagic;
     }
 
-    void getInformation() {
-        if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
-        } else if (skipNextMove) {
-            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
+    String getInformation() {
+        String info = getName() + ": \t";
+        if (isDistanceOver()) {
+            info += "ФИНИШ (" + getPosition() + ")\n";
+        } else if (skipNextMove()) {
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Движение заморожено чародеем\n";
         } else if (isSpeedSpellShoot) {
-            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d (использовал заклинание скорости)\n", name, currentDistance, speed.getCurrentSpeed() * 2);
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Текущая скорость - " + speed.getCurrentSpeed() * 2 + " (использовал заклинание скорости)\n";
         } else if (isFreezeSpellShoot) {
-            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d (использовал заклинание заморозки)\n", name, currentDistance, speed.getCurrentSpeed());
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Текущая скорость - " + speed.getCurrentSpeed() + " (использовал заклинание заморозки)\n";
         } else {
-            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Текущая скорость - " + speed.getCurrentSpeed() + "\n";
         }
+        System.out.print(info);
+        return info;
     }
 }

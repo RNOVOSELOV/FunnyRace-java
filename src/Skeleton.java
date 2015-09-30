@@ -5,7 +5,7 @@ import java.util.Random;
  */
 public class Skeleton extends Creature {
     static private int count;
-    boolean isCrashed;
+    private boolean isCrashed;
 
     static {
         count = 1;
@@ -19,7 +19,7 @@ public class Skeleton extends Creature {
     Skeleton(String name) {
         super(name + (" (скелет)"));
         if (name.isEmpty()) {
-            this.name = "Unknown #" + count + " (скелет)";
+            setName("Unknown #" + count + " (скелет)");
             count++;
         }
         Random random = new Random();
@@ -28,17 +28,21 @@ public class Skeleton extends Creature {
         isCrashed = false;
     }
 
+    public boolean isCrashed() {
+        return isCrashed;
+    }
+
     // Скелет очень легкий и обладает хорошей скоростью,
     // однако его кости не из титана, а обычная органика , потому он так же и очень хрупкий,
     // может распасться на множество кусочков во время бега и сойти с дистанции
     void ride() {
-        if (!isDistanceOver) {
+        if (!isDistanceOver()) {
             crashSkeleton();
         }
         if (isCrashed) {
-            isDistanceOver = true;
-        } else if (!skipNextMove && !isDistanceOver) {
-            currentDistance = currentDistance + speed.moveAndGetSpeed();
+            setDistanceOver(true);
+        } else if (!skipNextMove() && !isDistanceOver()) {
+            setCurrentDistance(getCurrentDistance() + speed.moveAndGetSpeed());
         }
     }
 
@@ -49,15 +53,18 @@ public class Skeleton extends Creature {
         }
     }
 
-    void getInformation() {
+    String getInformation() {
+        String info = getName() + ": \t";
         if (isCrashed) {
-            System.out.printf("%s: \tСкелет не выдержал нагрузки\n", name);
-        } else if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
-        } else if (skipNextMove) {
-            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
+            info += "Скелет не выдержал нагрузки\n";
+        } else if (isDistanceOver()) {
+            info += "ФИНИШ (" + getPosition() + ")\n";
+        } else if (skipNextMove()) {
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Движение заморожено чародеем\n";
         } else {
-            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
+            info += "Пройдено дистанции - " + getCurrentDistance() + "; Текущая скорость - " + speed.getCurrentSpeed() + "\n";
         }
+        System.out.print(info);
+        return info;
     }
 }

@@ -4,13 +4,13 @@ import java.util.Random;
  * Created by novoselov on 25.09.2015.
  */
 public class Creature implements Comparable {
-    protected String name;
+    private String name;
     protected Speed speed;
     private int age;
-    protected int currentDistance;
-    protected boolean isDistanceOver;
-    protected boolean skipNextMove;
-    protected int position;
+    private int currentDistance;
+    private boolean isDistanceOver;
+    private boolean skipNextMove;
+    private int position;
 
     Creature() {
         this("Неведомая сущность");
@@ -27,8 +27,44 @@ public class Creature implements Comparable {
         position = 0;
     }
 
-    public String getName (){
+    public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isDistanceOver() {
+        return isDistanceOver;
+    }
+
+    public void setDistanceOver(boolean isDistanceOver) {
+        this.isDistanceOver = isDistanceOver;
+    }
+
+    public boolean skipNextMove() {
+        return skipNextMove;
+    }
+
+    public void setSkipNextMove(boolean skipNextMove) {
+        this.skipNextMove = skipNextMove;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public int getCurrentDistance() {
+        return currentDistance;
+    }
+
+    public void setCurrentDistance(int currentDistance) {
+        this.currentDistance = currentDistance;
     }
 
     void about() {
@@ -41,14 +77,17 @@ public class Creature implements Comparable {
         }
     }
 
-    void getInformation() {
+    String getInformation() {
+        String info = name + ": \t";
         if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
+            info += "ФИНИШ (" + position + ")\n";
         } else if (skipNextMove) {
-            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
+            info += "Пройдено дистанции - " + currentDistance + "; Движение заморожено чародеем\n";
         } else {
-            System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
+            info += "Пройдено дистанции - " + currentDistance + "; Текущая скорость - " + speed.getCurrentSpeed() + "\n";
         }
+        System.out.print(info);
+        return info;
     }
 
     // Сравниваем по пройденной дистанции,

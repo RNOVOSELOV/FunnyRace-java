@@ -22,8 +22,8 @@ public class Speed {
     }
 
     public void setMaxSpeed(int maxSpeed) {
-        if (maxSpeed < minSpeed)
-            maxSpeed = minSpeed;
+        if (maxSpeed <= minSpeed)
+            maxSpeed = minSpeed + 1;
         this.maxSpeed = maxSpeed;
     }
 

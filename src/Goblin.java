@@ -19,7 +19,7 @@ public class Goblin extends Creature {
     Goblin(String name) {
         super(name + (" (гоблин)"));
         if (name.isEmpty()) {
-            this.name = "Unknown #" + count + " (гоблин)";
+            setName("Unknown #" + count + " (гоблин)");
             count++;
         }
         Random random = new Random();

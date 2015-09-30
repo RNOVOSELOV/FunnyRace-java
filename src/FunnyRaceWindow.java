@@ -4,9 +4,10 @@ import javax.swing.*;
  * Created by novoselov on 30.09.2015.
  */
 public class FunnyRaceWindow extends JFrame {
-    JTextArea jTextArea;
-    public FunnyRaceWindow () {
-        setSize(800,400);
+    private JTextArea jTextArea;
+
+    public FunnyRaceWindow() {
+        setSize(800, 450);
         setTitle("Веселые бега");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jTextArea = new JTextArea();
@@ -14,15 +15,15 @@ public class FunnyRaceWindow extends JFrame {
         add(jTextArea);
     }
 
-    public void openWindow () {
+    public void openWindow() {
         setVisible(true);
     }
 
-    public void clearAndSetText (String text) {
+    public void clearAndSetText(String text) {
         jTextArea.setText(text);
     }
 
-    public void appendText (String text) {
+    public void appendText(String text) {
         jTextArea.append(text);
     }
 
