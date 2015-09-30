@@ -18,10 +18,9 @@ public class Skeleton extends Creature {
 
     Skeleton(String name) {
         super(name + (" (скелет)"));
-        if (name.isEmpty())
-        {
+        if (name.isEmpty()) {
             this.name = "Unknown #" + count + " (скелет)";
-            count ++;
+            count++;
         }
         Random random = new Random();
         speed.setMinSpeed(25 + random.nextInt(6));       // 25 <= minimalSpeed <= 30
@@ -36,7 +35,7 @@ public class Skeleton extends Creature {
         crashSkeleton();
         if (isCrashed) {
             isDistanceOver = true;
-        } else if (!skipNextMove) {
+        } else if (!skipNextMove && !isDistanceOver) {
             currentDistance = currentDistance + speed.moveAndGetSpeed();
         }
     }
@@ -50,12 +49,12 @@ public class Skeleton extends Creature {
 
     void getInformation() {
         if (isCrashed) {
-            System.out.printf("%s: \tСкелет не выдержал нагрузки, распался на мелкие кусочки\n", name);
+            System.out.printf("%s: \tСкелет не выдержал нагрузки\n", name);
         } else if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ\n", name);
+            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
         } else if (skipNextMove) {
-            System.out.printf("%s: \tДвижение заморожено чародеем\n", name);
-        }else {
+            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
+        } else {
             System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
         }
     }

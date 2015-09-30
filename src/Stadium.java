@@ -6,10 +6,11 @@ import java.util.Scanner;
  * Created by novoselov on 25.09.2015.
  */
 public class Stadium {
-    public static int DISTANCE = 100;           // Дистанция, которую необходимо пробежать
+    public static int DISTANCE = 150;           // Дистанция, которую необходимо пробежать
     public static int SIZEOFPRINTEDDISTANCE = 100;
     public static int numberOfCreaturesTypes = 3;
     private static Stadium instance = null;
+    int number;
 
     ArrayList<Creature> creatures;
 
@@ -114,7 +115,6 @@ public class Stadium {
 
     public void setBet() {
         Scanner scanner = new Scanner(System.in);
-        int number;
         do {
             System.out.print("Введите порядковый номер бегуна: [1-" + creatures.size() + "]: ");
             if (scanner.hasNextInt()) {
@@ -138,9 +138,16 @@ public class Stadium {
         int time = 1;
         while (!stopRace) {
             stopRace = true;
+            skipNextMove = false;
             tempList = new ArrayList<Creature>(creatures);
             Collections.sort(tempList);
-            skipNextMove = false;
+            for (int i = tempList.size() - 1; i >= 0; i--) {
+                if (creatures.get(i).currentDistance >= Stadium.DISTANCE && !creatures.get(i).isDistanceOver) {
+                    creatures.get(i).isDistanceOver = true;
+                    creatures.get(i).position = position;
+                    position++;
+                }
+            }
             for (Creature creature : tempList) {
                 creature.skipNextMove = skipNextMove;
                 creature.ride();
@@ -153,16 +160,23 @@ public class Stadium {
                     stopRace = false;
                 }
             }
-            Collections.sort(tempList);
-            for (int i = tempList.size()-1; i >= 0 ; i--) {
-                if (creatures.get(i).currentDistance >= Stadium.DISTANCE && !creatures.get(i).isDistanceOver) {
-                    creatures.get(i).isDistanceOver = true;
-                    creatures.get(i).position = position;
-                    position++;
-                }
-            }
             System.out.println("\nВременная отсечка " + time++ + ":");
+            for (Creature creature : creatures) {
+                creature.getInformation();
+                creature.skipNextMove = false;
+            }
             printCurrentPosition();
+            pause();
+        }
+        for (int i = 0; i < creatures.size(); i++) {
+            if (creatures.get(i).position == 1) {
+                if (i == number - 1) {
+                    System.out.println("Да ты везунчик по жизни, пора в Лас Вегас!");
+                } else {
+                    System.out.println("Победил: " + creatures.get(i).name + ". " + creatures.get(number - 1).name + " занял место: " + creatures.get(number - 1).position);
+                }
+
+            }
         }
     }
 
@@ -183,9 +197,7 @@ public class Stadium {
                     System.out.print("_");
                 }
             }
-            System.out.printf("\t");
-            creatures.get(i).getInformation();
-            creatures.get(i).skipNextMove = false;
+            System.out.printf("\n");
         }
     }
 
@@ -196,20 +208,4 @@ public class Stadium {
             e.printStackTrace();
         }
     }
-
-    /*
-        if (horses[0].horseNumber == number) {
-            System.out.println("Ваша лошадь пришла первой! Принимайте поздравления и вознаграждения!");
-        } else {
-            for (int i = 0; i < horses.length; i++) {
-                if (horses[i].horseNumber == number)
-                {
-                    number = i+1;   // Теперь здесь храним порядковы помер нашей лошадки в списке финишеров
-                    break;
-                }
-            }
-            System.out.println("Победила лошадь: " + horses[0].name + ". Ваша лошадь пришла под номером: " + number);
-        }
-    }
-*/
 }

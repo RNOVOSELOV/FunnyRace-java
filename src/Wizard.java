@@ -42,7 +42,7 @@ public class Wizard extends Creature {
     // с вероятностью 25% маг прибалять себе скорость в два раза
     // с вероятностью 25% замораживает впередиидущих юнитов на один ход
     void ride() {
-        if (!skipNextMove) {
+        if (!skipNextMove && !isDistanceOver) {
             int currSpeed = speed.moveAndGetSpeed();
             isSpeedSpellShoot = doSpell();
             isFreezeSpellShoot = doSpell();
@@ -58,9 +58,9 @@ public class Wizard extends Creature {
 
     void getInformation() {
         if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ\n", name);
+            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
         } else if (skipNextMove) {
-            System.out.printf("%s: \tДвижение заморожено чародеем\n", name);
+            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
         } else if (isSpeedSpellShoot) {
             System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d (использовал заклинание скорости)\n", name, currentDistance, speed.getCurrentSpeed() * 2);
         } else if (isFreezeSpellShoot) {

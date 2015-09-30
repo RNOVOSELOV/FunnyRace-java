@@ -32,16 +32,16 @@ public class Creature implements Comparable {
     }
 
     void ride() {
-        if (!skipNextMove) {
+        if (!skipNextMove && !isDistanceOver) {
             currentDistance = currentDistance + speed.moveAndGetSpeed();
         }
     }
 
     void getInformation() {
         if (isDistanceOver) {
-            System.out.printf("%s: \tФИНИШ\n", name);
+            System.out.printf("%s: \tФИНИШ (%d)\n", name, position);
         } else if (skipNextMove) {
-            System.out.printf("%s: \tДвижение заморожено чародеем\n", name);
+            System.out.printf("%s: \tПройдено дистанции - %d; Движение заморожено чародеем\n", name, currentDistance);
         } else {
             System.out.printf("%s: \tПройдено дистанции - %d; Текущая скорость - %d\n", name, currentDistance, speed.getCurrentSpeed());
         }

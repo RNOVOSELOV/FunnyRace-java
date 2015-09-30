@@ -5,7 +5,7 @@ public class Race {
     public static void main(String[] args) {
         Stadium stadium = Stadium.getInstance();
         stadium.createAndSetUpUnits();
-        stadium.setBet ();
+        stadium.setBet();
         stadium.startRace();
     }
 }
